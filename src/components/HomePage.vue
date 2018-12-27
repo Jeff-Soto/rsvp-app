@@ -1,6 +1,11 @@
 <template>
-  <div class="">
-
+  <div class="usersContainer">
+    <h3>Users: </h3>
+    <div class="user" v-if="users.length > 0" v-for="user in users">
+      <p>Name: {{user.name}}</p>
+      <p>Age: {{user.age}}</p>
+      <p>Gender: {{user.gender}}</p>
+    </div>
   </div>
 </template>
 
@@ -19,10 +24,14 @@ export default {
 
   },
   mounted(){
-    fetch("/api")
+    fetch("/api/users")
     .then((res) => {
-      console.log(res);
-      this.users = res;
+      if (res.ok){
+        return res.json();
+      }
+    })
+    .then((json) => {
+      this.users = json;
     })
     .catch(err => err);
   }

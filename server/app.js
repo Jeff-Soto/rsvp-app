@@ -20,8 +20,8 @@ const users = [
   }
 ]
 
-app.get('/api', (req, res) => {
-  res.json(users);
+app.get('/api/users', (req, res) => {
+  res.send(users);
 });
 
 app.listen(3000, () => {
