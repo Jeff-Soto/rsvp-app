@@ -1,6 +1,21 @@
 const express = require('express');
 app = express();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({extended: false}));
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//   );
+//   if (req.method === 'OPTIONS') {
+//     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+//     return res.status(200).json({});
+//   }
+//   next();
+// });
 
 mongoose.Promise = Promise;
 
@@ -28,8 +43,13 @@ app.get('/api/deliveries', (req, res) => {
 });
 
 app.post('/api/deliveries', (req, res) => {
-  const deliveryInfo = req.body.delivery;
-  console.log("Delivery Info", deliveryInfo);
+  Delivery.create(req.body, (err, newDelivery)=>{
+    if(err){
+      console.log("Err posting");
+      return;
+    }
+    res.redirect('back');
+  })
 });
 
 app.listen(3000, () => {
